@@ -30,3 +30,41 @@ const videos = [
     cover: "images/ninjasam.png"
   }
 ];
+
+const player = document.getElementById("videoPlayer");
+const nowPlaying = document.getElementById("nowPlaying");
+const playlistContainer = document.getElementById("playlist");
+
+function loadPlaylist() {
+  playlistContainer.innerHTML = "";
+
+  videos.forEach((video, index) => {
+    const item = document.createElement("div");
+    item.className = "track";
+
+    item.innerHTML = `
+      <img src="${video.cover}" class="cover-thumb">
+      <div class="video-meta">
+        <div>${video.title}</div>
+        <div class="video-author">${video.author}</div>
+      </div>
+    `;
+
+    item.addEventListener("click", () => playVideo(index));
+    playlistContainer.appendChild(item);
+  });
+}
+
+function playVideo(index) {
+  const video = videos[index];
+
+  player.src = `${video.src}?rel=0&modestbranding=1`;
+  nowPlaying.textContent = `Now Playing: ${video.title} — ${video.author}`;
+
+  document.querySelectorAll(".track").forEach((track, i) => {
+    track.style.background = i === index ? "#333" : "";
+  });
+}
+
+loadPlaylist();
+playVideo(0);
